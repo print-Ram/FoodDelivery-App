@@ -1,0 +1,11 @@
+<h2>Your Orders</h2>
+<ul *ngIf="orders.length > 0; else noOrders">
+  <li *ngFor="let order of orders">
+    <strong>ID:</strong> {{ order.order_id }} | <strong>Status:</strong> {{ order.status }}
+  </li>
+</ul>
+
+<ng-template #noOrders>
+  <p>No orders found.</p>
+</ng-template>
+

@@ -1,0 +1,29 @@
+  <ul *ngIf="showProducts" class="mt-5">
+    <li *ngFor="let food of foods">
+      <img [src]="food.imageurl" class="product-img" width="300" height="200" style="object-fit: cover;" />
+      <div class="content">
+        <div class="name"><h4>{{ food.name }}</h4></div>
+      </div>
+      <div class="product_item-footer">
+        <div class="description">
+          {{ food.description }}
+        </div>
+        <div class="price">
+          {{ food.price | currency: 'INR':'symbol':'1.2-2' }}
+        </div>
+       <div class="btn-group custom-cart-buttons" role="group" aria-label="Add chocolate item">
+          <button class="btn" (click)="decrement(food)" [disabled]="!cartQuantities[food.product_id]">-</button>
+
+          <button class="btn" (click)="addToCart(food)">
+            {{ cartQuantities[food.product_id] ? cartQuantities[food.product_id] : 'Add' }}
+          </button>
+
+          <button class="btn" (click)="increment(food)">+</button>
+        </div>
+
+                    
+      </div>
+    </li>
+  </ul>
+
+  

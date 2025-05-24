@@ -1,0 +1,39 @@
+<header [class.scrolled]="isScrolled" class="py-2 border-bottom shadow-sm">
+  <div class="container d-flex flex-wrap align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <img src="/krishva_logo.jpg" alt="Krishva Logo" class="logo-img me-2" />
+      <a routerLink="/" class="logo fs-4 fw-bold text-dark text-decoration-none">
+        <h1>Krishva Homemade Chocolates</h1>
+      </a>
+    </div>
+
+    <nav class="mt-2 mt-md-0">
+      <ul class="nav align-items-center">
+        <li class="nav-item position-relative me-3">
+          <a routerLink="/cart" class="nav-link position-relative p-0">
+            <i class="bi bi-cart" style="font-size: 1.8rem;"></i>
+            <span
+              *ngIf="cartCount > 0"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="font-size: 0.65rem;"
+            >
+              {{ cartCount }}
+            </span>
+          </a>
+        </li>
+        <li *ngIf="isLoggedIn && role !== 'ADMIN'" class="nav-item me-3">
+          <a [routerLink]="'/orders'" class="btn btn-primary btn-sm"  style="font-family: 'Times New Roman', Times, serif;" >
+            My Orders
+          </a>
+        </li>
+
+        <li *ngIf="!isLoggedIn" class="nav-item me-2">
+          <a routerLink="/login" class="btn btn-info btn-sm" style="font-family: 'Times New Roman', Times, serif;">Login</a>
+        </li>
+        <li *ngIf="isLoggedIn" class="nav-item">
+          <button (click)="logout()" class="btn btn-danger btn-sm"  style="font-family: 'Times New Roman', Times, serif;" >Logout</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,32 @@
+<div class="auth-container">
+  <form [formGroup]="authForm" (ngSubmit)="login()">
+    <h2>Login to Order Chocolates</h2>
+
+    <!-- Email -->
+    <div>
+      <input type="email" formControlName="email" placeholder="Email" />
+      <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
+        Valid email required.
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <input type="password" formControlName="password" placeholder="Password" />
+      <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched">
+        Password must be at least 6 characters.
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="authForm.invalid">Login</button>
+  </form>
+
+  <!-- Link to Registration -->
+  <div class="toggle-link">
+    <a routerLink="/register">New user? Register here</a>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="auth-container">
+  <form [formGroup]="authForm" (ngSubmit)="register()">
+    <h2>Register to Start Ordering</h2>
+
+    <!-- Name -->
+    <div>
+      <input type="text" formControlName="name" placeholder="Full Name" />
+      <div *ngIf="authForm.get('name')?.invalid && authForm.get('name')?.touched">
+        Name is required.
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <input type="text" formControlName="contact" placeholder="Contact Number" />
+      <div *ngIf="authForm.get('contact')?.invalid && authForm.get('contact')?.touched">
+        Contact is required.
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <input type="email" formControlName="email" placeholder="Email" />
+      <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
+        Valid email required.
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <input type="password" formControlName="password" placeholder="Password" />
+      <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched">
+        Password must be at least 6 characters.
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div>
+      <textarea formControlName="address" placeholder="Address"></textarea>
+      <div *ngIf="authForm.get('address')?.invalid && authForm.get('address')?.touched">
+        Address is required.
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="authForm.invalid">Register</button>
+  </form>
+</div>
+

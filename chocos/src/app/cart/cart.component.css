@@ -1,0 +1,12 @@
+.item-description {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.custom-total-bg {
+  background: linear-gradient(to right, #f44336, #ff9800 ); /* Orange to Red gradient */
+  color: white;
+}
