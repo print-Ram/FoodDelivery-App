@@ -7,15 +7,26 @@ import { CartComponent } from './cart/cart.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './admin/home.component';
 import { OrderComponent } from './order/order.component';
+import { HomeGuard } from './home.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AccountComponent } from './account/account.component';
+import { SettingsComponent } from './settings/settings.component';
+import { CouponComponent } from './coupon/coupon.component';
 
 const routes: Routes = [
-  { path: '', component: ProductsComponent},
+  { path: '', component:ProductsComponent,canActivate: [HomeGuard]},
+  { path: 'about', component:DashboardComponent},
+  { path: 'products/:category', component: ProductsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'coupons', component:CouponComponent },
   { path: 'admin', component: HomeComponent,canActivate: [AuthGuard]},
   { path: 'orders', component: OrderComponent },
-  { path: 'dashboard', component: ProductsComponent, canActivate: [AuthGuard] },
-  { path: 'cart', component: CartComponent }
+  { path: 'user', component: ProductsComponent, canActivate: [AuthGuard] },
+  { path: 'cart', component: CartComponent },
+  { path: 'settings', component: SettingsComponent },
+  { path: 'accounts', component: AccountComponent }
+
   ];
 
 @NgModule({

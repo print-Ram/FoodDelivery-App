@@ -62,6 +62,18 @@ body {
   resize: none;
 }
 
+.login-heading {
+    font-family: 'Cursive', 'Arial', sans-serif; /* change to any font you like */
+    margin-bottom: 20px;  /* space below the heading */
+    font-weight: 600;     /* optional: make it slightly bold */
+    font-size: 2rem;      /* adjust size as needed */
+}
+
+.login-heading .text-info {
+    color: #0dcaf0;       /* your info color */
+}
+
+
 .auth-container input:focus,
 .auth-container textarea:focus {
   border-color: var(--accent);
@@ -83,11 +95,11 @@ body {
 }
 
 .auth-container button:disabled {
-  background-color: #d3a687;
+  background-color: #e2ad8a;
   cursor: not-allowed;
 }
 
-.auth-container button:hover:not(:disabled) {
+.auth-container button:not(:disabled) {
   background-color: #a0522d;
   transform: scale(1.03);
 }
@@ -137,6 +149,7 @@ body {
     opacity: 1;
   }
 }
+
 
 /* Responsive fix for small screens */
 @media (max-width: 480px) {

@@ -1,8 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
-body {
+/* body {
   margin: 0;
   background: linear-gradient(120deg, #f8f7f6f3, #5c2828dc);
   background-size: 100% 100%;
+} */
+
+.code{
+   background: linear-gradient(90deg, #261514, #311a22, #4b3024);
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
 }
 
+.code{
+  color: aliceblue;
+}
 
+/* Background tone-aware card */
+.order-card {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border: none;
+}
+
+/* Better label clarity */
+.order-card p {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+/* Section header */
+.text-2xl {
+  font-size: 1.5rem;
+  color: #f8d3d3; /* Matches soft pink */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Adjust loading text */
+.dots span {
+  animation: blink 1s infinite;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Status colors */
+.status-shipped {
+  color: #ff9800;
+  font-weight: 600;
+}
+.status-pending {
+  color: #d32f2f;
+  font-weight: 600;
+}

@@ -21,7 +21,7 @@ body {
   background: var(--cream);
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 30px rgba(167, 114, 114, 0.645);
   animation: slideIn 0.8s ease-out;
   position: relative;
   overflow: hidden;
@@ -68,11 +68,24 @@ body {
   outline: none;
 }
 
-/* Submit button */
+/* Input Groups */
+.auth-container .form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* Validation error text */
+.auth-container .form-group .text-secondary {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #ff6f61;
+}
+
+/* Submit button - NO bottom line */
 .auth-container button {
   width: 100%;
   padding: 12px;
-  background-color: var(--accent);
+  background-color: #a0522d;
   color: white;
   border: none;
   border-radius: 10px;
@@ -80,6 +93,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
 }
 
 .auth-container button:disabled {
@@ -117,25 +131,33 @@ body {
   text-decoration: underline;
 }
 
-/* Animations */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Phone input style */
+.phone-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-bottom: 2px solid var(--choco-light);
+  padding: 6px 0;
+  background-color: transparent;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.flag-icon {
+  width: 24px;
+  height: auto;
+}
+
+.prefix {
+  font-weight: bold;
+  color: #333;
+}
+
+.phone-input input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  background: transparent;
 }
 
 /* Responsive fix for small screens */
@@ -149,3 +171,4 @@ body {
     font-size: 20px;
   }
 }
+

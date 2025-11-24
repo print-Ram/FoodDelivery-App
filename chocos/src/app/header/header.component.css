@@ -1,109 +1,181 @@
-/* header {
-  background-color: white;
-  padding: 0;
-  border-bottom: 1px solid rgb(120, 7, 7);
-}
-a {
-  color:black;
-}
-
-.container {
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-}
-nav ul li a {
-  padding: 1em;
-  display: inline-block;
-}
-
-.logo {
-  font-family: 'Great Vibes', cursive;
-  font-size: 45px;
-  font-weight: 400;
-  color: inherit;
-}
-.logo-img {
-    width: 130px;
-    height: 150px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  .logo-img {
-  height: 60px;
-  width: auto;
-} */
-
-/* Responsive Typography */
-/* @media (max-width: 576px) {
-  .logo-img {
-    height: 50px;
-  }
-
-  .logo {
-    font-size: 1.1rem !important;
-    white-space: normal;
-  }
-
-  nav ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  header .container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-} */
-
-
-
-/* HEADER BACKGROUND GRADIENT */
-header {
-  background: linear-gradient(to right, #ffecd2, #6a5c58);
-  color: #2d2d2d;
-  transition: background 0.5s ease-in-out, box-shadow 0.5s ease;
+/* Gradient Animated Header */
+.main-header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  background: linear-gradient(90deg, #412624, #955a6f, #704937);
+  background-size: 300% 300%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* LOGO IMAGE STYLING */
+
+/* Logo & Brand */
 .logo-img {
-  height: 80px;
-  width: auto;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-/* BRAND NAME STYLING */
-.logo {
-  font-family: 'Pacifico', cursive;
-  color: #8b0000 !important;
-  transition: color 0.3s ease;
+.brand-text h1 {
+  margin: 0;
+  font-size: 5rem;
+  font-weight: 700;
+  color: #eff9f8e7;
+  font-family: 'Georgia', serif;
 }
 
-/* NAV ITEM HOVER EFFECT */
-.nav-link, .btn {
-  transition: all 0.3s ease;
+/* Nav Menu */
+.nav-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.nav-link:hover,
-.btn:hover {
-  color: #ff69b4;
-  transform: scale(1.05);
+.nav-link {
+  color: #6e260e;
+  font-size: 1.5rem;
+  position: relative;
+  transition: transform 0.2s;
 }
 
-/* SCROLL EFFECT: DARKER HEADER */
-header.scrolled {
-  background: linear-gradient(to right, #6a5c58, #e5a449);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.nav-link:hover {
+  transform: scale(1.1);
 }
 
+/* Cart Count */
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #dc3545;
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Buttons */
+.soft-btn {
+  background-color: #a0522d;
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  border-radius: 25px;
+  padding: 5px 15px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.soft-btn:hover {
+  background-color: #8b4513;
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  color: #333;
+  padding: 5px 15px;
+  font-family: 'Times New Roman', Times, serif;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .brand-text h1 {
+    font-size: 1.3rem;
+  }
+
+  .nav-menu {
+    margin-top: 1rem;
+  }
+
+  .nav-link {
+    font-size: 1.2rem;
+  }
+
+  .container-fluid {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
+.profile-icon {
+  transition: background-color 0.3s ease;
+}
+
+.profile-icon:hover {
+  background-color: #6c757d;
+}
+
+.no-caret::after {
+  display: none !important;
+}
+
+/* Side Nav Dropdown Card */
+.side-nav-card {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 230px;
+  z-index: 1050;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Dropdown item style (Bootstrap compatible) */
+.dropdown-item {
+  padding: 10px 15px;
+  font-size: 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+.brand-name span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: fallIn 0.6s forwards ease-out;
+}
+
+/* Trigger only when component is visible */
+:host-context(.ng-animating) .brand-name span {
+  animation-play-state: running;
+}
+
+@keyframes fallIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) rotateX(45deg);
+  }
+  60% {
+    transform: translateY(5px) rotateX(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

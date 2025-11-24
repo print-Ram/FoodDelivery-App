@@ -1,35 +1,64 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = 'https://springboot-app-400542225228.us-central1.run.app/api/auth';
+  private loginUrl = 'http://localhost:8080/api/auth';
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(credentials: { username: string; password: string }): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.loginUrl}/login`, credentials, { headers });
-  }
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  return this.http.post<any>(`${this.loginUrl}/login`, credentials, { headers }).pipe(
+    tap(response => {
+      if (response.token) {
+        sessionStorage.setItem('token', response.token); // ✅ Store token in sessionStorage
+        this.isLoggedInSubject.next(true);
+      }
+    })
+  );
+}
+
   register(user: any): Observable<any> {
   return this.http.post(`${this.loginUrl}/register`, user);
 }
   saveToken(token: string): void {
   sessionStorage.setItem('token', token);
-
-  // Decode token and extract role
   const payload = JSON.parse(atob(token.split('.')[1]));
-  const role = payload.role;
-
-  sessionStorage.setItem('role', role); // save role separately
+  sessionStorage.setItem('role', payload.role);
+  sessionStorage.setItem('userId', payload.userId);
   this.isLoggedInSubject.next(true);
 }
+
+getUserId(): string | null {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.sub || null; // ✅ use 'sub' for user ID
+  }
+  return null;
+}
+
+
+
+
+getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.loginUrl}/${userId}`);
+  }
+
+updateUser(userId: string, updatedUser: User): Observable<string> {
+  return this.http.put(`${this.loginUrl}/${userId}/update`, updatedUser, {
+    responseType: 'text'
+  });
+}
+
 
 
  getToken(): string | null {

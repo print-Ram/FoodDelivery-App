@@ -1,0 +1,63 @@
+header {
+  background-color: white;
+  padding: 0;
+  border-bottom: 1px solid rgb(120, 7, 7);
+}
+a {
+  color:black;
+}
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+}
+nav ul li a {
+  padding: 1em;
+  display: inline-block;
+}
+
+.logo {
+  font-family: 'Great Vibes', cursive;
+  font-size: 45px;
+  font-weight: 400;
+  color: inherit;
+}
+.logo-img {
+    width: 130px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .logo-img {
+  height: 60px;
+  width: auto;
+}
+
+/* Responsive Typography */
+@media (max-width: 576px) {
+  .logo-img {
+    height: 50px;
+  }
+
+  .logo {
+    font-size: 1.1rem !important;
+    white-space: normal;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  header .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

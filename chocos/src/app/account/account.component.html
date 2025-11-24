@@ -1,0 +1,18 @@
+<div class="container py-4 profile-section" *ngIf="selectedUser; else loading">
+  <h2 class="mb-4 text-white text-shadow">👤 Profile Details</h2>
+  <div class="blur-card p-4">
+    <p class="i1"><strong>User ID:</strong>&nbsp;<span class="i2">{{ selectedUser.user_id }}</span><br/><small class="desc">___________________________________________</small></p>
+    <p class="i1"><strong>Name:</strong>&nbsp;<span class="i2">{{ selectedUser.name }}</span> <br/><small class="desc">___________________________________________</small></p>
+    <p class="i1"><strong>Email:</strong>&nbsp;<span class="i2">{{ selectedUser.email }}</span> <br/><small class="desc">___________________________________________</small></p>
+    <p class="i1"><strong>Address:</strong>&nbsp;<span class="i2">{{ selectedUser.address }}</span> <br/><small class="desc">___________________________________________</small></p>
+    <p class="i1"><strong>Phone:</strong>&nbsp;<span class="i2">{{ selectedUser.contact }}</span> <br/><small class="desc">Used for delivery coordination.</small></p>
+  </div>
+</div>
+
+
+<ng-template #loading>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-3">Loading your details...</p>
+  </div>
+</ng-template>

@@ -1,39 +1,89 @@
-<header [class.scrolled]="isScrolled" class="py-2 border-bottom shadow-sm">
-  <div class="container d-flex flex-wrap align-items-center justify-content-between">
-    <div class="d-flex align-items-center">
-      <img src="/krishva_logo.jpg" alt="Krishva Logo" class="logo-img me-2" />
-      <a routerLink="/" class="logo fs-4 fw-bold text-dark text-decoration-none">
-        <h1>Krishva Homemade Chocolates</h1>
-      </a>
-    </div>
 
-    <nav class="mt-2 mt-md-0">
-      <ul class="nav align-items-center">
-        <li class="nav-item position-relative me-3">
-          <a routerLink="/cart" class="nav-link position-relative p-0">
-            <i class="bi bi-cart" style="font-size: 1.8rem;"></i>
-            <span
-              *ngIf="cartCount > 0"
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              style="font-size: 0.65rem;"
-            >
-              {{ cartCount }}
-            </span>
-          </a>
-        </li>
-        <li *ngIf="isLoggedIn && role !== 'ADMIN'" class="nav-item me-3">
-          <a [routerLink]="'/orders'" class="btn btn-primary btn-sm"  style="font-family: 'Times New Roman', Times, serif;" >
-            My Orders
-          </a>
-        </li>
+<header [class.scrolled]="isScrolled" class="main-header position-relative">
+  <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-3 py-2">
+  <!-- Logo and Brand -->
+   <div class="d-flex align-items-center">
+  <img src="/krishva_logo.jpg" alt="Krishva Logo" class="logo-img me-2" style="height: 40px; width: 40px;" />
+  
+  <a routerLink="/about" class="brand-text text-decoration-none">
+    <h1 class="fs-5 m-0 brand-name">
+      <span *ngFor="let letter of brandLetters; let i = index"
+            [style.animationDelay]="i * 0.1 + 's'">
+        {{ letter }}
+      </span>
+    </h1>
+  </a>
+</div>
 
-        <li *ngIf="!isLoggedIn" class="nav-item me-2">
-          <a routerLink="/login" class="btn btn-info btn-sm" style="font-family: 'Times New Roman', Times, serif;">Login</a>
-        </li>
-        <li *ngIf="isLoggedIn" class="nav-item">
-          <button (click)="logout()" class="btn btn-danger btn-sm"  style="font-family: 'Times New Roman', Times, serif;" >Logout</button>
-        </li>
-      </ul>
-    </nav>
-  </div>
+
+
+
+    <div *ngIf="!isLoggedIn && !isLoginPage" class="nav-item me-2 list-unstyled">
+    <a routerLink="/login" class="btn btn-dark">Login</a>
+</div>
+
+
+    <!-- Cart Icon (Visible only for non-admin users) -->
+<div class="d-flex align-items-center ms-auto">
+
+      <!-- Cart Icon -->
+      <div *ngIf="isLoggedIn && role !== 'ADMIN'" class="nav-item position-relative me-2">
+        <a routerLink="/cart" class="btn border-0 bg-transparent position-relative p-0">
+          <i class="bi bi-cart-fill fs-4 text-white"></i>
+          <span *ngIf="cartCount > 0"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger animate-pulse">
+            {{ cartCount }}
+          </span>
+        </a>
+      </div>
+
+      <!-- Profile Icon & Side Nav -->
+      <div *ngIf="isLoggedIn" class="nav-item ms-auto position-relative">
+        <button class="btn border-0 bg-transparent" (click)="toggleSideNav()">
+          <div class="profile-icon rounded-circle bg-white text-dark d-flex justify-content-center align-items-center"
+               style="width: 40px; height: 40px;">
+            <i class="bi bi-person-fill fs-5"></i>
+          </div>
+        </button>
+
+  <!-- Floating Side Nav Card -->
+  <div
+    *ngIf="sideNavOpen"
+    #sideNavCard
+    class="side-nav-card position-absolute shadow p-3 rounded bg-white"
+    style="top: 110%; right: 0; z-index: 1000; width: 200px;">
+    <ul class="list-unstyled mb-0">
+    <li>
+      <a routerLink="/user" class="dropdown-item" (click)="sideNavOpen = false">🏠 Home</a>
+    </li>
+    <li *ngIf="isLoggedIn && role !== 'ADMIN'" class="nav-item me-3 list-unstyled">
+      <a routerLink="/orders" class="dropdown-item" (click)="sideNavOpen = false">🛒 My Orders</a>
+    </li>
+    <li>
+      <a routerLink="/accounts" class="dropdown-item" (click)="sideNavOpen = false">👤 My Account</a>
+    </li>
+    <li>
+      <a routerLink="/settings" class="dropdown-item" (click)="sideNavOpen = false">⚙️ Settings</a>
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <button class="dropdown-item text-danger" (click)="logout(); sideNavOpen = false">🚪 Logout</button>
+    </li>
+  </ul>
+</div>
+</div>
+</div>
+</div>
 </header>
+
+
+
+
+<!-- LOADING SPINNER -->
+<ng-template #loading>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-3">Loading your details...</p>
+  </div>
+</ng-template> 
+ 

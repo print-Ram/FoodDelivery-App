@@ -3,11 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Foods } from '../../models/food';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class FoodService {
-  private apiUrl = 'https://springboot-app-400542225228.us-central1.run.app/api/products';
+  private apiUrl = 'http://localhost:8080/api/products';
 
   constructor(private http: HttpClient) {}
 
@@ -25,11 +26,14 @@ export class FoodService {
   }
 
   // Authenticated - JWT sent automatically by interceptor
-  addProduct(product: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/add_item`, product, {
-      responseType: 'text' as 'json'
-    });
-  }
+  // product.service.ts or wherever fs.addProduct() is defined
+
+addProduct(product:Foods): Observable<any> {
+  const token = sessionStorage.getItem('token') || '';
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post(`${this.apiUrl}/auth/add_item`, product, { headers });
+}
+
 
   // In FoodService
 updateProduct(productId: string, product: Foods, options?: { headers: HttpHeaders }): Observable<string> {
@@ -45,9 +49,10 @@ updateProduct(productId: string, product: Foods, options?: { headers: HttpHeader
 
 
 
-  deleteProduct(product_id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/auth/delete_item/${product_id}`, {
-      responseType: 'text'
-    });
-  }
+  deleteProduct(productId: string): Observable<any> {
+  const token = sessionStorage.getItem('token') || '';
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.delete(`${this.apiUrl}/auth/delete_item/${productId}`, { headers ,responseType: 'text' as 'json' });
+}
+
 }

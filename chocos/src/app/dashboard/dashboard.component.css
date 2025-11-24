@@ -1,0 +1,137 @@
+/* Container with moving gradient */
+.about-container {
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #e3e3e3, #ffe46e, #a6fbf4, #ff8888);
+  background-size: 500% 500%;
+  animation: gradientShift 20s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  flex-direction: column;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Main card */
+.about-card {
+  background: #fffaf7;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 1000px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography */
+.about-card h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+  color: #8b4513;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: #4b2e2e;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: 'Georgia', serif;
+}
+
+/* Features section */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.feature {
+  flex: 1 1 260px;
+  background: #fff5ee;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-8px);
+}
+
+.feature h3 {
+  color: #a0522d;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: #5c4033;
+}
+
+/* Story Section */
+.story h2 {
+  color: #6e260e;
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
+
+.story p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  color: #5e3023;
+  padding: 0 1rem;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  background-color: #3e1f0d;
+  color: #fff;
+  padding: 1.5rem 1rem;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.footer a {
+  color: #ffcccb;
+  text-decoration: none;
+  margin: 0 0.3rem;
+}
+
+.footer a:hover {
+  color: #ffffff;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .lead, .feature p, .story p {
+    font-size: 0.95rem;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-card {
+    padding: 1.5rem;
+  }
+}

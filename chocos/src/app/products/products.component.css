@@ -1,4 +1,4 @@
-.btn-group .btn {
+/* .btn-group .btn {
     border-radius: 0;
   }
   .btn-group .btn:first-child {
@@ -30,7 +30,7 @@
   ul li {
   height: 23rem;
   width: 20rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 3D shadow effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   border-radius: 1rem;
   text-align: center;
   margin: 0.5rem;
@@ -38,7 +38,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: linear-gradient(30deg, #6e1b04f3, #9b9292dc); /* add background for contrast */
+  background: linear-gradient(30deg, #6e1b04f3, #9b9292dc); 
   color: rgb(82, 6, 29);
   transition: transform 0.2s;
 }
@@ -48,7 +48,7 @@
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
   ul li:hover {
-  transform: translateY(-5px); /* lift on hover for better 3D feel */
+  transform: translateY(-5px); 
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
   .admin-panel {
@@ -91,7 +91,7 @@
   }
 
   .custom-cart-buttons .btn {
-  background-color: #a0522d; /* chocolate brown */
+  background-color: #a0522d; 
   color: white;
   border: none;
 }
@@ -101,5 +101,216 @@
 }
 
 .custom-cart-buttons .btn:hover:not(:disabled) {
-  background-color: #8b4513; /* darker on hover */
+  background-color: #8b4513; 
+}
+
+.dots span {
+  animation: blink 1.5s infinite;
+  font-weight: bold;
+  font-size: 2rem;
+  color: #b23b3b;
+  opacity: 0;
+}
+
+.dots span:nth-child(1) { animation-delay: 0s; }
+.dots span:nth-child(2) { animation-delay: 0.3s; }
+.dots span:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes blink {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+} */
+
+/* General Reset */
+.container{
+   background: linear-gradient(90deg, #261514, #311a22, #4b3024);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #fdfcfc;
+}
+h4{
+  font-family:'Times New Roman', Times, serif;
+  color: #f9ff84;
+}
+
+/* Category Card Grid */
+.category-card {
+  height: 200px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.category-card .overlay h2 {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+/* When category expands */
+.category-products {
+  background: linear-gradient(180deg, #fff7f2 0%, #f8e7dc 100%);
+  border-left: 5px solid #8b4513; /* chocolate tone */
+  box-shadow: inset 0 0 10px rgba(139, 69, 19, 0.2);
+  margin: 10px 15px 25px 15px;
+  transition: all 0.4s ease-in-out;
+}
+/* SMALL FOOTER */
+.small-footer {
+  padding: 15px 0 !important;  /* reduced height */
+  margin-top: 20px !important;
+}
+
+.footer-logo {
+  width: 50px !important;  /* smaller logo */
+}
+
+.footer-text {
+  font-size: 0.85rem;  /* smaller text */
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Each product card inside dropdown */
+.category-products .card {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #fffdfb;
+}
+.category-products .card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(139, 69, 19, 0.3);
+}
+
+/* Make the last product row look like the end of the section */
+.category-products::after {
+  content: "End of this category 🍫";
+  display: block;
+  text-align: center;
+  color: #6b3e26;
+  font-style: italic;
+  font-weight: 500;
+  margin-top: 15px;
+  padding: 10px;
+  border-top: 2px dashed #a0522d;
+  opacity: 0.9;
+}
+
+/* Product List */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.product-list li {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: calc(100% / 2 - 1rem);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-list li:hover {
+  transform: translateY(-5px);
+}
+
+.product-img {
+  border-radius: 0.75rem;
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+/* Content & Buttons */
+.content h4 {
+  margin: 0.5rem 0;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.description {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-weight: bold;
+  color: #0d6efd;
+  margin-bottom: 0.75rem;
+}
+
+.custom-cart-buttons .btn {
+  background-color: #0d6efd;
+  color: white;
+  margin: 0 0.25rem;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+}
+
+.custom-cart-buttons .btn:hover {
+  background-color: #084298;
+}
+
+.code3{
+   background: linear-gradient(90deg, #151515);
+   color: #538a9d;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+}
+
+.code31{
+  color: #538a9d;
+}
+
+
+.dots span {
+  animation: blink 1.5s infinite;
+  font-weight: bold;
+  font-size: 2rem;
+  color: #c9ffff;
+  opacity: 0;
+}
+
+.dots span:nth-child(1) { animation-delay: 0s; }
+.dots span:nth-child(2) { animation-delay: 0.3s; }
+.dots span:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes blink {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.load{
+  color: #fff;
+}
+
+.pp1{
+  color: #97dddd;
+}
+
+.pp2{
+  color: #fdfcfb;
+}
+
+.d-block{
+  color: #c9b9c4;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }

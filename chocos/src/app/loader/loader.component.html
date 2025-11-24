@@ -1,0 +1,16 @@
+<!-- <div class="text-center mt-5">
+  <div class="spinner-border text-primary" role="status"></div>
+    <p class="fs-4 text-muted fw-semibold">
+    {{ message }}<span class="dots">
+      <span>.</span><span>.</span><span>.</span>
+    </span>
+  </p>
+</div> -->
+
+<div class="overlay" *ngIf="loadingService.loading$ | async">
+  <div class="loader-text">
+    🍫 Please wait... Preparing something sweet for you!
+    <div class="choco-spinner"></div>
+  </div>
+</div>
+

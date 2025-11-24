@@ -4,4 +4,8 @@ export class Foods {
   name!: string;
   description!: string;
   imageurl!: string;
+  category?: string;
+  categoryDescription?:string; // optional
+  categoryBgImageUrl?:string;
+  subcategory?: string;
 }

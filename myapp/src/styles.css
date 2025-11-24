@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+* {
+  box-sizing: border-box;
+}
+html {
+  font: 16px;
+}
+body {
+  margin: 0;
+  font-family: quicksand, sans-serif;
+  font-size: 18px;
+}
+a {
+  text-decoration: none;
+}
+/* Cart badge */
+.cart-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  font-size: 0.75rem;
+  padding: 0.25em 0.4em;
+  transform: translate(-50%, -50%);
+}

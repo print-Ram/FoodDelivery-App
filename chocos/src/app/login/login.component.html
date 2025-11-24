@@ -1,32 +1,70 @@
 <div class="auth-container">
   <form [formGroup]="authForm" (ngSubmit)="login()">
-    <h2>Login to Order Chocolates</h2>
+    <h2 class="login-heading"><span class="text-info">Toppings </span>to Login!</h2>
+
+
 
     <!-- Email -->
     <div>
       <input type="email" formControlName="email" placeholder="Email" />
-      <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
-        Valid email required.
+      <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-white">
+        <small *ngIf="authForm.get('email')?.errors?.['required']">*Valid email required.</small> 
       </div>
     </div>
 
     <!-- Password -->
-    <div>
-      <input type="password" formControlName="password" placeholder="Password" />
-      <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched">
-        Password must be at least 6 characters.
-      </div>
-    </div>
+ <div class="position-relative mb-3">
+  <input
+    [type]="showPassword ? 'text' : 'password'"
+    class="form-control pe-5"
+    formControlName="password"
+    placeholder="Password"
+    style="padding-right: 2.5rem;" 
+  />
+
+  <!-- Eye Icon -->
+  <i
+    class="bi"
+    [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+    (click)="togglePasswordVisibility($event)"
+    style="
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #6c757d;
+      z-index: 10;
+    "
+  ></i>
+
+  <!-- Error Message -->
+  <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="text-white mt-1">
+    <small *ngIf="authForm.get('password')?.errors?.['required']">
+      *Password must be at least 6 characters.
+    </small>
+  </div>
+</div>
+
+
 
     <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <div *ngIf="errorMessage" class="error text-danger">{{ errorMessage }}!</div>
 
     <!-- Submit Button -->
-    <button type="submit" [disabled]="authForm.invalid">Login</button>
+  <app-loading-button
+  [isLoading]="isLoading"
+  [text]="authForm.valid ? 'Login' : 'Top it up'"
+  [disabled]="authForm.invalid"
+  (click)="login()">
+  </app-loading-button>
+
+
   </form>
 
   <!-- Link to Registration -->
   <div class="toggle-link">
-    <a routerLink="/register">New user? Register here</a>
+    <a routerLink="/register"><span class="text-warning">New user? </span>Register here.</a>
   </div>
 </div>

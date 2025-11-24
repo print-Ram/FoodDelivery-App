@@ -1,45 +1,444 @@
-<div *ngIf="groupedCartItems.length > 0; else emptyCart" class="container mt-4 mb-5">
-  <h3 class="mb-4">Your Cart</h3>
+<div class="container my-4" *ngIf="groupedCartItems.length > 0; else emptyCart">
+  <div class="row g-4">
 
-  <div *ngFor="let item of groupedCartItems" class="row align-items-center py-3 border-bottom">
-    <div class="col-3 col-sm-2">
-      <img [src]="item.imageurl" alt="{{ item.name }}" class="img-fluid rounded" />
+    <!-- LEFT COLUMN: ITEMS + COUPON -->
+    <div class="col-lg-7">
+
+      <!-- ITEMS SECTION -->
+      <div class="card shadow-lg border-0 rounded-4 mb-3">
+        <div class="card-body">
+          <h4 class="fw-bold mb-3">Your Items</h4>
+
+          <div *ngFor="let item of groupedCartItems"
+               class="d-flex justify-content-between align-items-center border-bottom py-2 flex-wrap">
+            <div class="d-flex align-items-center" style="flex: 1 1 55%;">
+              <img [src]="item.imageurl"
+                   alt="{{ item.name }}"
+                   class="img-fluid rounded me-3"
+                   style="width: 60px; height: 60px; object-fit: cover;" />
+              <div>
+                <h6 class="mb-1">{{ item.name }}</h6>
+                <small class="text-muted">{{ item.description }}</small>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column align-items-end mt-2 mt-md-0 text-end" style="flex: 1 1 40%;">
+              <strong class="mb-1">₹{{ item.price }}</strong>
+              <div class="btn-group btn-group-sm">
+                <button (click)="decrement(item)" class="btn btn-outline-dark">-</button>
+                <button class="btn btn-secondary" disabled>{{ item.quantity }}</button>
+                <button (click)="increment(item)" class="btn btn-outline-dark">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 text-end">
+            <strong>Subtotal: ₹{{ getCartTotal() }}</strong>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="col-9 col-sm-4">
-      <h6 class="mb-1">{{ item.name }}</h6>
-      <small class="text-muted item-description">{{ item.description }}</small>
-    </div>
+    <!-- RIGHT COLUMN: ADDRESS + SUMMARY -->
+   <div class="col-lg-5">
 
-    <div class="col-6 col-sm-3 mt-2 mt-sm-0">
-      <strong style="color: rgb(35, 33, 9);">₹{{ item.price }}</strong>
-    </div>
-    
-    <div class="col-6 col-sm-3 text-end">
-      <div class="btn-group" role="group">
-        <strong>X</strong>&nbsp;&nbsp;
-        <button (click)="decrement(item)" class="btn btn-dark btn-sm">-</button>
-        <button class="btn btn-secondary btn-sm" disabled>
-          {{ item.quantity }}
+  <!-- ADDRESS SECTION -->
+  <div class="card shadow-lg border-0 rounded-4 mb-3 choco-card">
+    <div class="card-body">
+
+      <!-- Heading + helper -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <h5 class="fw-bold mb-0 choco-heading">Where should we deliver the sweetness?</h5>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="isLoadingAddresses" class="text-muted mt-2">
+        Melting your saved addresses into view...
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="addressError" class="alert alert-warning py-2 mt-2">
+        {{ addressError }}
+      </div>
+
+      <!-- Saved addresses list -->
+      <div *ngIf="hasAddresses && !showAddressForm && !isLoadingAddresses" class="mt-3">
+
+        <div class="form-check mb-2 d-flex align-items-start choco-address-item"
+             *ngFor="let addr of addresses">
+
+          <!-- Radio to select address -->
+          <input class=" mt-1"
+                 type="radio"
+                 name="addressRadio"
+                 [value]="addr.addressId"
+                 [(ngModel)]="selectedAddressId"
+                 (ngModelChange)="onAddressChange($event)">
+
+          <!-- Clickable area that opens modal -->
+          <div class="ms-2 flex-grow-1 address-clickable"
+               (click)="openAddressActionModal(addr)">
+            <label class="form-check-label">
+              <span class="fw-semibold">{{ addr.line1 }}</span>,
+              {{ addr.city }} - {{ addr.postalCode }}
+              <span class="badge bg-success ms-1" *ngIf="addr.isDefault">Default</span>
+            </label>
+            <div class="small text-muted">
+              {{ addr.state }}, {{ addr.country || 'India' }}
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-link p-0 mt-2 choco-link" (click)="enableNewAddress()">
+          ➕ Add another sweet spot
         </button>
-        <button (click)="increment(item)" class="btn btn-dark btn-sm">+</button>
+      </div>
+
+
+      <!-- MODAL (placed OUTSIDE ngFor) -->
+      <div *ngIf="showAddressActionModal"
+           class="custom-modal-backdrop"
+           (click)="closeAddressActionModal()">
+
+        <div class="custom-modal" (click)="$event.stopPropagation()">
+
+          <div class="custom-modal-header">
+            <span>Address actions</span>
+
+            <!-- Close button -->
+            <button type="button"
+                    class="custom-close-btn"
+                    (click)="closeAddressActionModal()">
+              &times;
+            </button>
+          </div>
+
+          <div class="custom-modal-body">
+            <p class="small text-muted" *ngIf="selectedActionAddress">
+              {{ selectedActionAddress.line1 }}, {{ selectedActionAddress.city }}
+            </p>
+
+            <button class="btn btn-primary w-100 mb-2"
+                    (click)="onEditAddressFromModal()">
+              Edit address
+            </button>
+
+            <button class="btn btn-outline-danger w-100"
+                    (click)="onDeleteAddressFromModal()">
+              Delete address
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- New address form -->
+      <div *ngIf="showAddressForm" class="mt-3">
+        <form>
+
+          <!-- Location tools row -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="text-muted">
+              Start typing your area/city or let us find you automatically.
+            </small>
+            <button type="button"
+                    class="btn btn-outline-secondary btn-sm"
+                    (click)="useMyLocation()"
+                    [disabled]="isDetectingLocation">
+              <span *ngIf="!isDetectingLocation">📍 Use my location</span>
+              <span *ngIf="isDetectingLocation">Detecting...</span>
+            </button>
+          </div>
+
+          <div *ngIf="locationError" class="text-danger small mb-2">
+            {{ locationError }}
+          </div>
+
+          <!-- Search Address (autocomplete) -->
+          <div class="mb-2">
+            <label class="form-label">Search Address</label>
+            <input
+              class="form-control"
+              [(ngModel)]="addressSearchTerm"
+              name="addressSearch"
+              (input)="onAddressSearchChange(addressSearchTerm)"
+              autocomplete="off"
+              placeholder="Type area, city, pincode..."
+            />
+
+            <div class="form-text" *ngIf="isSearchingAddress">
+              Swirling through maps for your spot...
+            </div>
+            <div class="text-danger small" *ngIf="addressSearchError">
+              {{ addressSearchError }}
+            </div>
+
+            <!-- Suggestions list -->
+            <div
+              class="list-group mt-1 shadow-sm"
+              *ngIf="addressSuggestions.length > 0"
+              style="max-height: 180px; overflow-y: auto;"
+            >
+              <button
+                type="button"
+                class="list-group-item list-group-item-action small"
+                *ngFor="let s of addressSuggestions"
+                (click)="applyAddressSuggestion(s)"
+              >
+                {{ s.area }}, {{ s.city }}, {{ s.postalCode }}, {{ s.state }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Address fields (auto-filled but editable) -->
+          <div class="mb-2">
+            <label class="form-label">Area / Street</label>
+            <input class="form-control" [(ngModel)]="newAddress.line1" name="line1" required />
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Landmark</label>
+            <input class="form-control" [(ngModel)]="newAddress.line2" name="line2" />
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-2">
+              <label class="form-label">City</label>
+              <input class="form-control" [(ngModel)]="newAddress.city" name="city" required />
+            </div>
+            <div class="col-6 mb-2">
+              <label class="form-label">State</label>
+              <input class="form-control" [(ngModel)]="newAddress.state" name="state" required />
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Postal Code</label>
+            <input class="form-control" [(ngModel)]="newAddress.postalCode" name="postalCode" required />
+          </div>
+
+          <div class="form-check mb-3">
+            <input class="form-check-input"
+                   type="checkbox"
+                   [(ngModel)]="newAddress.isDefault"
+                   name="isDefault">
+            <label class="form-check-label">
+              Make this my default chocolate drop spot
+            </label>
+          </div>
+
+          <!-- Delivery info preview for this new address -->
+          <div class="mb-3" *ngIf="shippingDistanceKm !== null">
+            <div class="small text-muted">
+              Distance from Chocolate Room:
+              <strong>{{ shippingDistanceKm | number:'1.1-1' }} km</strong>
+            </div>
+            <div class="small" [ngClass]="{'text-success': shippingFee === 0, 'text-primary': shippingFee > 0}">
+              Delivery Fee:
+              <strong *ngIf="shippingFee === 0">Free</strong>
+              <strong *ngIf="shippingFee > 0">₹{{ shippingFee }}</strong>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="cancelNewAddress()">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="saveAddress()">
+              Save Address
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
-  <!-- Total + Buy Now -->
-  <div class="row mt-4 p-3 custom-total-bg text-white rounded shadow-sm align-items-center">
-    <div class="col-12 col-md-6 mb-3 mb-md-0 text-center text-md-start">
-      <h5>Total: ₹{{ getTotalPrice() }}</h5>
+        <!-- COUPON SECTION -->
+      <div class="card shadow-sm border-0 rounded-4 candy-card">
+  <div class="card-body">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h5 class="fw-semibold mb-1 text-choco">Have a sweet coupon?</h5>
+        <small class="text-muted">
+          Add a dash of discount to your chocolate basket 🍫
+        </small>
+      </div>
+      <div class="coupon-pill text-nowrap">
+        Sweet Deals
+      </div>
     </div>
-    <div class="col-12 col-md-6 text-center text-md-end">
-      <button class="btn btn-primary px-4" (click)="buyNow()">Buy Now</button>
+
+    <!-- ✅ Single input bar with Apply / X inside -->
+    <div class="coupon-input-wrapper mb-3">
+      <input type="text"
+             class="form-control candy-input"
+             placeholder="Type your candy code here"
+             [(ngModel)]="couponCode"
+             [readonly]="appliedCoupon != null" />
+
+      <!-- Show APPLY when user typed something and no coupon applied -->
+      <button *ngIf="!appliedCoupon && couponCode"
+              class="coupon-action-btn apply-btn"
+              (click)="applyCoupon()"
+              [disabled]="isApplyingCoupon">
+        {{ isApplyingCoupon ? '...' : 'Apply' }}
+      </button>
+
+      <!-- Show X when coupon is applied -->
+      <button *ngIf="appliedCoupon"
+              class="coupon-action-btn clear-btn"
+              (click)="removeCoupon()">
+        &times;
+      </button>
     </div>
+
+    <!-- Status text -->
+    <div class="mt-1">
+      <small class="text-success" *ngIf="appliedCoupon">
+        🍭 Applied: <strong>{{ appliedCoupon.code }}</strong> — You saved ₹{{ discountAmount }}
+      </small>
+      <small class="text-danger d-block" *ngIf="couponError">
+        {{ couponError }}
+      </small>
+    </div>
+
+    <hr class="my-3">
+
+    <!-- Available coupons list (Activate still auto-applies) -->
+    <div>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-semibold text-choco">Available sweet coupons</span>
+        <small *ngIf="isLoadingCoupons" class="text-muted">Loading offers...</small>
+      </div>
+
+      <div *ngIf="couponsError" class="text-danger small mb-2">
+        {{ couponsError }}
+      </div>
+
+      <div *ngIf="!isLoadingCoupons && coupons.length === 0" class="small text-muted">
+        No coupons available right now. Check back later for sweeter deals!
+      </div>
+
+      <div class="coupon-scroll" *ngIf="coupons.length > 0">
+        <div class="coupon-chip" *ngFor="let c of coupons">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="coupon-code">{{ c.code }}</span>
+            <span class="badge bg-light text-dark border">
+              {{ c.discount }}% OFF
+            </span>
+          </div>
+          <div class="coupon-desc small mb-2">
+            {{ c.description }}
+          </div>
+          <button class="btn btn-sm w-100 btn-activate-choco"
+                  (click)="activateCoupon(c)"
+                  [disabled]="appliedCoupon != null">
+            Activate
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
+
+  <!-- SUMMARY + PAY NOW -->
+  <div class="card shadow-lg mt-4 rounded-4 choco-card">
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <h5 class="fw-bold mb-0 choco-heading">Order summary</h5>
+          <small class="text-muted choco-subtitle">
+            A quick peek at your chocolate box before checkout 🍫
+          </small>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mb-1">
+        <span>Subtotal</span>
+        <span>₹{{ getCartTotal() }}</span>
+      </div>
+
+      <!-- Delivery fee row -->
+      <div class="d-flex justify-content-between mb-1" *ngIf="shippingFee > 0">
+        <span>Delivery Fee</span>
+        <span>₹{{ shippingFee }}</span>
+      </div>
+      <div class="d-flex justify-content-between mb-1 text-success" *ngIf="shippingFee === 0">
+        <span>Delivery Fee</span>
+        <span>Free</span>
+      </div>
+      <div class="d-flex justify-content-between mb-1" *ngIf="discountAmount > 0">
+        <span>Discount</span>
+        <span class="text-success">- ₹{{ discountAmount }}</span>
+      </div>
+
+      <hr>
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <strong>Payable Amount</strong>
+        <strong>₹{{ getPayableAmount() }}</strong>
+      </div>
+
+      <button class="btn btn-success w-100 py-2 fw-semibold choco-pay-btn"
+              (click)="buyNow()"
+              [disabled]="!selectedAddressId && !showAddressForm">
+        💳 Pay now &amp; treat yourself
+      </button>
+    </div>
+  </div>
+
+</div>
+
+
+
+  </div>
+</div>
+
+<!-- EMPTY CART -->
 <ng-template #emptyCart>
-  <div class="text-center mt-5">
-    <p class="text-muted">Your cart is empty.</p>
+  <div class="text-center text-muted mt-5">
+    <h2>🛒</h2>
+    <p class="text-light" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+      Oops! Your cart is as empty as a chocolate wrapper!!
+    </p>
+    <button class="btnn1 mt-5" routerLink="/user">🍫 Start Ordering Now</button>
+  </div>
+</ng-template>
+
+<!-- SUCCESS / FAILURE MODALS (same as yours) -->
+<ng-template #orderSuccess let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">🎉 Order Placed!</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Your order has been placed successfully!</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="modal.close(); goToOrders()">View Orders</button>
+  </div>
+</ng-template>
+
+<ng-template #paymentFailed let-modal>
+  <div class="modal-header bg-danger text-white">
+    <h5 class="modal-title">❌ Payment Failed</h5>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Something went wrong with your payment. Please try again or check your network.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close(); goToCart()">Go to Cart</button>
+    <button class="btn btn-danger" (click)="modal.close(); buyNow()">Retry Payment</button>
   </div>
 </ng-template>

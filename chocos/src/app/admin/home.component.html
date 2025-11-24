@@ -1,51 +1,98 @@
 <div class="admin-panel mt-5">
   <div class="d-flex justify-content-between align-items-center">
-    <h1 class="mb-0">Admin Product Manager</h1>
-    <div class="d-flex gap-3">
-      <button (click)="toggleshowAll()" class="btn btn-warning">DashBoard</button>
-      <button (click)="toggleAddForm()" class="btn btn-warning">Add Products</button>
-      <button (click)="toggleDeleteView()" class="btn btn-danger">Delete Products</button>
+    <h1 class="mb-0 admintext">Admin Product Manager</h1>
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+      <button (click)="toggleshowAll()" class="btn btn-warning responsive-button">DashBoard</button>
+      <button (click)="toggleAddForm()" class="btn btn-warning responsive-button">Add Products</button>
+      <button (click)="toggleDeleteView()" class="btn btn-danger responsive-button">Delete Products</button>
+      <button (click)="toggleUserView()" class="btn btn-primary responsive-button">View Users</button>
+      <button (click)="toggleshowOrder()" class="btn btn-secondary responsive-button">View Orders</button>
+      <button (click)="goToCoupons()" class="btn btn-dark responsive-button">Coupons</button>
+
+
+
     </div>
   </div>
   
-<ul *ngIf="showProducts" class="mt-5">
-  <li *ngFor="let food of foods">
-    <img [src]="food.imageurl" class="product-img" width="300" height="200" style="object-fit: cover;" />
-    <div class="content">
-      <div class="name">{{ food.name }}</div>
-    </div>
-    <div class="product_item-footer">
-      <div class="description">
-        {{ food.description }}
+<!-- Category Cards with Dropdown Products -->
+<div *ngIf="showProducts" class="container mt-4">
+  <div *ngFor="let category of categoryList" class="mb-4">
+    
+    <!-- Category Header -->
+    <div class="d-flex justify-content-between align-items-center p-3 rounded shadow-sm mb-2"
+         style="background: linear-gradient(90deg, #f7d794, #f9ca24); cursor: pointer;"
+         (click)="toggleCategory(category)">
+      <div>
+        <h5 class="mb-0">{{ category }}</h5>
+        <small *ngIf="categoryMeta[category]?.description" class="text-muted">
+          {{ categoryMeta[category].description }}
+        </small>
       </div>
-      <div class="price">
-        {{ food.price | currency: 'INR':'symbol':'1.2-2' }}
-      </div>
+      <button class="btn btn-sm btn-danger ms-3" (click)="deleteCategory(category); $event.stopPropagation()">
+        Delete Category
+      </button>
     </div>
-    <button class="btn btn-secondary" (click)="editProduct(food)">Edit</button>
-  </li>
-</ul>
+    
+    <!-- Dropdown: Products in Category -->
+    <ul *ngIf="categoryVisibility[category]" class="list-unstyled">
+      <li *ngFor="let food of categoryWiseProducts[category]" class="card shadow-sm mb-3 p-3 position-relative"
+          style="background: rgba(255, 255, 255, 0.95); border-radius: 1rem;">
+        
+        <img [src]="food.imageurl" class="card-img-top rounded"
+             style="width: 100%; height: 200px; object-fit: cover;" />
+
+        <div class="card-body">
+          <h6 class="card-title">{{ food.name }}</h6>
+          <p class="card-text text-muted">{{ food.description }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="fw-bold text-dark">{{ food.price | currency:'INR':'symbol':'1.2-2' }}</span>
+            <div>
+              <button class="btn btn-sm btn-primary me-2" (click)="editProduct(food)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteProduct(food.product_id)">Delete</button>
+            </div>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+
+
+
+
  
 
  <!-- Add Product Form -->
 <form *ngIf="showAddForm" (ngSubmit)="addProduct()" #productForm="ngForm">
   <input [(ngModel)]="newProduct.name" name="name" placeholder="Name" required />
   <input [(ngModel)]="newProduct.price" name="price" type="number" placeholder="Price" required />
-  <input [(ngModel)]="newProduct.imageurl" name="imageurl" placeholder="Image URL" required />
+  <input [(ngModel)]="newProduct.imageurl" name="imageurl" placeholder="Image URL" />
+  <input type="file" (change)="onImageSelected($event, 'add')" accept="image/*" />
   <textarea [(ngModel)]="newProduct.description" name="description" placeholder="Description" required></textarea>
+  <input [(ngModel)]="newProduct.category" name="category" placeholder="Category" required />
+  <input [(ngModel)]="newProduct.categoryDescription" name="category" placeholder="Category Description" required />
+  <input [(ngModel)]="newProduct.categoryBgImageUrl" name="category" placeholder="Category Image" required />
+  <button type="submit" class="btn btn-primary">Add Product</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" (click)="toggleshowAll()">Cancel</button>
 
-  <button type="submit" class="btn btn-primary">Add Product</button>
 </form>
 
 <!-- Update Product Form -->
 <form *ngIf="showUpdateForm" (ngSubmit)="updateProduct()" #productForm="ngForm">
   <input [(ngModel)]="selectedProduct.name" name="name" placeholder="Name" required />
   <input [(ngModel)]="selectedProduct.price" name="price" type="number" placeholder="Price" required />
-  <input [(ngModel)]="selectedProduct.imageurl" name="imageurl" placeholder="Image URL" required />
+  <input [(ngModel)]="selectedProduct.imageurl" name="imageurl" placeholder="Image URL" />
+  <input type="file" (change)="onImageSelected($event, 'update')" accept="image/*" />
   <textarea [(ngModel)]="selectedProduct.description" name="description" placeholder="Description" required></textarea>
-
-  <button type="submit" class="btn btn-success">Update Product</button>
+  <input [(ngModel)]="selectedProduct.category" name="category" placeholder="Category" />
+  <input [(ngModel)]="selectedProduct.categoryDescription" name="categoryDescription" placeholder="Category Description" />
+  <input [(ngModel)]="selectedProduct.categoryBgImageUrl" name="categoryBgImageUrl" placeholder="Category Image URL" />
+  <button type="submit" class="btn btn-success">Update Product</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" (click)="toggleshowAll()" >Cancel</button>
 </form>
+
 
 
   <!-- Product Cards for Deletion -->
@@ -59,27 +106,126 @@
     </div>
   </div>
 
+<!--Show Users-->
+<div *ngIf="showUsers">
+  <h2>All Users <span class="badge bg-primary">Total: {{ totalUsers }}</span></h2>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>User ID</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteUser(user.user_id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <button class="btn btn-secondary" (click)="toggleshowAll()">Back</button>
+  </div>
+</div>
 
-<h2>All Orders</h2>
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>User ID</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let order of orders">
-      <td>{{ order.order_id }}</td>
-      <td>{{ order.user_id }}</td>
-      <td>{{ order.status }}</td>
-      <td>
-        <button *ngIf="order.status !== 'Confirmed'" (click)="updateStatus(order.order_id, 'Confirmed')">Confirm Order</button>
-        <button (click)="deleteOrder(order.order_id)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+
+<!-- User Details View -->
+<div *ngIf="showUserDetails && selectedUser" class="card p-3 my-3">
+  <h3>User Details</h3>
+  <p><strong>Name:</strong> {{ selectedUser.name }}</p>
+  <p><strong>Contact:</strong> {{ selectedUser.contact }}</p>
+  <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+  <p><strong>Address:</strong> {{ selectedUser.address }}</p>
+
+  <button (click)="toggleshowAll()" class="btn btn-secondary mt-2">Back</button>
+</div>
+
+<!-- Selcted Orders -->
+<div *ngIf="selectOrder">
+  <div *ngIf="selectedOrder?.items?.length" class="order-details-container">
+    <h3>Order Details</h3>
+    <p><strong>Order ID:</strong> {{ selectedOrder.order_id }}</p>
+    <p><strong>Items:</strong></p>
+    <ul class="item-list">
+      <li *ngFor="let item of selectedOrder.items" class="item-card">
+      <strong>{{ item.product_name || 'Unknown Product' }}</strong><br>
+        Quantity: {{ item.quantity }}<br>
+        Price: ₹{{ item.price }}
+      </li>
+    </ul>
+    <p><strong>Shipping Address:</strong> {{selectedOrder.shippingAddress}}</p>
+
+    <p><strong>Total Price:</strong> ₹{{ selectedOrder.totalPrice }}</p>
+    <button (click)="toggleshowAll()" class="btn btn-dark responsive-button">Back</button>
+  </div>
+</div>
+
+
+<!-- Orders View -->
+<div *ngIf="showOrders">
+  <h2>All Orders</h2>
+
+  <!-- Summary Counts -->
+  <div class="mb-3">
+    <span class="badge bg-primary me-2">Total Orders: {{ orders.length }}</span>
+    <span class="badge bg-success me-2">Delivered: {{ getCountByStatus('DELIVERED') }}</span>
+    <span class="badge bg-warning text-dark me-2">Shipped: {{ getCountByStatus('SHIPPED') }}</span>
+    <span class="badge bg-info text-dark">Confirmed: {{ getCountByStatus('CONFIRMED') + getCountByStatus('Confirmed') }}</span>
+  </div>
+
+  <div class="table-responsive">
+  <table class="table table-sm table-borderless align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>User ID</th>
+        <th>User Name</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders" class="bg-white mb-2 shadow-sm rounded">
+        <td>
+          <a (click)="viewOrderDetails(order.order_id)" 
+             style="cursor: pointer; text-decoration: underline; color: #0d6efd;">
+            {{ order.order_id }}
+          </a>
+        </td>
+        <td>{{ order.user_id }}</td>
+        <td>
+          <a (click)="viewUserDetails(order.user_id)" 
+             style="cursor: pointer; text-decoration: underline; color: #0d6efd;">
+            {{ order.name }}
+          </a>
+        </td>
+        <td>
+          <span [ngClass]="{
+            'badge bg-warning text-dark': order.status === 'CONFIRMED',
+            'badge bg-info text-dark': order.status === 'SHIPPED',
+            'badge bg-success': order.status === 'COMPLETED'
+          }">
+            {{ order.status }}
+          </span>
+        </td>
+        <td class="d-flex flex-wrap gap-1">
+          <button *ngIf="order.status === 'CONFIRMED'" class="btn btn-dark btn-sm" (click)="markShipped(order)">Ship</button>
+          <button *ngIf="order.status === 'SHIPPED'" class="btn btn-success btn-sm" (click)="markCompleted(order)">Complete</button>
+          <button class="btn btn-outline-danger btn-sm" (click)="deleteOrder(order.order_id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+ 
+</div>
+
 </div>

@@ -1,0 +1,5 @@
+<button [disabled]="isLoading || disabled" class="btn">
+  <span *ngIf="!isLoading">{{ text }}</span>
+  <span *ngIf="isLoading" class="spinner"></span>
+</button>
+

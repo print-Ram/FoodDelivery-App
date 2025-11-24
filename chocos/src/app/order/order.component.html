@@ -1,11 +1,49 @@
-<h2>Your Orders</h2>
-<ul *ngIf="orders.length > 0; else noOrders">
-  <li *ngFor="let order of orders">
-    <strong>ID:</strong> {{ order.order_id }} | <strong>Status:</strong> {{ order.status }}
-  </li>
-</ul>
+<div class="code2">
+<h2 class="text-2xl font-semibold mb-4">Your Orders</h2>
 
-<ng-template #noOrders>
+<div *ngIf="isLoading" class="d-flex flex-column align-items-center justify-content-center text-center" style="height: 80vh;">
+  <p class="fs-4 fw-semibold">
+    {{ loadingMessage }}<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+  </p>
+</div>
+
+<div *ngIf="!isLoading && orders.length === 0" class="text-muted">
   <p>No orders found.</p>
-</ng-template>
+</div>
 
+<div *ngFor="let order of orders" class="order-card mb-4 shadow rounded p-3" style="border: 1px solid #ccc;">
+  <div class="d-flex justify-content-between align-items-center" (click)="toggleOrder(order)" style="cursor: pointer;">
+    <div>
+      <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+      <p><strong>Status:</strong> <span [style.color]="getStatusColor(order.status)">{{ order.status }}</span></p>
+      <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
+    </div>
+    <div>
+      <span [innerText]="order.expanded ? '▲' : '▼'"></span>
+    </div>
+  </div>
+
+ <div *ngIf="order.expanded" class="mt-3 border-top pt-3">
+  <p><strong>Date:</strong> {{ order.orderDate | date: 'medium' }}</p>
+
+  <!-- 🚚 Sender / Shipping Details -->
+  <div *ngIf="order.status === 'SHIPPED'" class="mb-3 border rounded bg-light p-3">
+    <h6 class="mb-2 text-primary">Shipping Details</h6>
+    <p><strong>Sender:</strong> {{ order.senderName }}</p>
+    <p><strong>Courier:</strong> {{ order.courierService }}</p>
+    <p><strong>Tracking ID:</strong> {{ order.trackingId }}</p>
+  </div>
+
+  <!-- 🛒 Ordered Items -->
+  <div *ngFor="let item of order.items" class="d-flex align-items-start gap-3 mt-3" style="border: 1px solid #eee; border-radius: 10px; padding: 10px;">
+    <img [src]="item.imageurl" alt="{{ item.product_name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;" />
+    <div>
+      <p><strong>Product:</strong> {{ item.product_name }}</p>
+      <p>Quantity: {{ item.quantity }}</p>
+      <p>Price: ₹{{ item.price }}</p>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>

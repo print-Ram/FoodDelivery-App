@@ -10,3 +10,251 @@
   background: linear-gradient(to right, #f44336, #ff9800 ); /* Orange to Red gradient */
   color: white;
 }
+
+.custom-total-bg {
+  background: linear-gradient(90deg, #4cafac,rgb(19, 23, 23));
+}
+
+input.form-control {
+  border: 2px solid #000 !important;
+  box-shadow: none;
+}
+
+.address-clickable {
+  cursor: pointer;
+}
+
+.custom-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.custom-modal {
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  width: 90%;
+  max-width: 380px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-close-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.custom-modal-body {
+  margin-top: 1rem;
+}
+
+/* COUPON CSS */
+
+.candy-card {
+  background: radial-gradient(circle at top left, #ffe6f2 0, #fff7e6 35%, #ffffff 70%);
+}
+
+.text-choco {
+  color: #4b2c20;
+}
+
+.coupon-pill {
+  background: linear-gradient(135deg, #ff7aa2, #ffb347);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* 🔹 Input + inline button / cross */
+.coupon-input-wrapper {
+  position: relative;
+}
+
+.candy-input {
+  border-radius: 999px;
+  border: 1px solid #f3b3cd;
+  padding-inline: 1.25rem 5rem; /* extra right padding for button/X */
+  background-color: #fdfcff;
+}
+
+/* Shared style for right-side action */
+.coupon-action-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  border: none;
+  font-size: 0.85rem;
+  padding: 0.25rem 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Apply button style */
+.apply-btn {
+  background: linear-gradient(135deg, #5a3a2b, #8b5e3c);
+  color: #fff;
+}
+
+/* Clear (X) icon style */
+.clear-btn {
+  background: transparent;
+  color: #5a3a2b;
+  font-size: 1.3rem;
+  padding: 0;        /* just the icon */
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+/* Coupon list styles (same as before) */
+.coupon-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+}
+
+.coupon-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.coupon-scroll::-webkit-scrollbar-thumb {
+  background: #f1b3c5;
+  border-radius: 999px;
+}
+
+.coupon-chip {
+  min-width: 190px;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #fff0f6, #ffe9d6);
+  border: 1px dashed #f3b3cd;
+  box-shadow: 0 4px 8px rgba(139, 94, 60, 0.08);
+}
+
+.coupon-code {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5a3a2b;
+}
+
+.coupon-desc {
+  color: #7b5c4a;
+}
+
+.btn-activate-choco {
+  background: #ff7aa2;
+  border: none;
+  color: #fff;
+  border-radius: 999px;
+}
+
+
+/* COUPON CSS END */
+/* Address CSS */
+/* Chocolatey cards */
+.choco-card {
+  background: radial-gradient(circle at top left, #ffe6f2 0, #fff7e6 40%, #ffffff 80%);
+  border-radius: 1.5rem;
+}
+
+/* Headings & subtitles */
+.choco-heading {
+  color: #4b2c20;
+}
+
+.choco-subtitle {
+  font-size: 0.8rem;
+}
+
+/* Step pill */
+.choco-pill {
+  background: linear-gradient(135deg, #ff7aa2, #ffb347);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.choco-pill-dark {
+  background: linear-gradient(135deg, #5a3a2b, #8b5e3c);
+}
+
+/* Address items */
+.address-clickable {
+  cursor: pointer;
+}
+
+.choco-address-item {
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.choco-address-item:hover {
+  background-color: rgba(255, 230, 242, 0.6);
+  box-shadow: 0 2px 6px rgba(139, 94, 60, 0.1);
+}
+
+/* Link-style button */
+.choco-link {
+  color: #8b5e3c;
+}
+
+.choco-link:hover {
+  color: #5a3a2b;
+  text-decoration: underline;
+}
+
+/* Pay button */
+.choco-pay-btn {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  border: none;
+}
+
+.choco-pay-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+/* Address CSS END */
+.btnn1 {
+  background-image: url('https://cdn.shopify.com/s/files/1/0425/2699/8690/files/Gooey_Chocolate_Gifs_480x480.gif?v=1652814536');
+  background-size: cover;
+  background-position: center;
+  color: rgb(253, 251, 251);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1rem;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-shadow: 1px 1px 2px #000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.btnn1:hover {
+  transform: scale(1.05);
+}

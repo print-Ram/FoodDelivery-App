@@ -1,52 +1,101 @@
 <div class="auth-container">
-  <form [formGroup]="authForm" (ngSubmit)="register()">
-    <h2>Register to Start Ordering</h2>
+  <form [formGroup]="authForm" class="form-group">
+    <h2>Register Now!</h2>
 
     <!-- Name -->
-    <div>
-      <input type="text" formControlName="name" placeholder="Full Name" />
-      <div *ngIf="authForm.get('name')?.invalid && authForm.get('name')?.touched">
-        Name is required.
-      </div>
-    </div>
+<div class="form-group">
+  <input type="text" formControlName="name" class="form-control" placeholder="Full Name" />
+  <div *ngIf="authForm.get('name')?.invalid && authForm.get('name')?.touched" class="text-white">
+    <small *ngIf="authForm.get('name')?.errors?.['required']">*Name is required.</small>
+  </div>
+</div>
 
-    <!-- Contact -->
-    <div>
-      <input type="text" formControlName="contact" placeholder="Contact Number" />
-      <div *ngIf="authForm.get('contact')?.invalid && authForm.get('contact')?.touched">
-        Contact is required.
-      </div>
-    </div>
+<!-- Phone -->
+<div class="form-group">
+  <div class="phone-input">
+    <img src="https://flagcdn.com/w40/in.png" alt="India Flag" class="flag-icon" />
+    <span class="prefix">+91</span>
+    <input
+      type="text"
+      class="text-warning"
+      formControlName="contact"
+      placeholder="Enter mobile number"
+      maxlength="10"
+      pattern="[0-9]{10}"
+    />
+  </div>
+  <div *ngIf="authForm.get('contact')?.invalid && authForm.get('contact')?.touched" class="text-white">
+    <small *ngIf="authForm.get('contact')?.errors?.['required']">*Contact number is required.</small>
+    <small *ngIf="authForm.get('contact')?.errors?.['pattern']">Enter a valid 10-digit number.</small>
+  </div>
+</div>
 
-    <!-- Email -->
-    <div>
-      <input type="email" formControlName="email" placeholder="Email" />
-      <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
-        Valid email required.
-      </div>
-    </div>
+<!-- Email -->
+<div class="form-group">
+  <input type="email" formControlName="email" placeholder="Email" />
+  <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-white">
+    <small *ngIf="authForm.get('email')?.errors?.['required']">*Email is required.</small>
+    <small *ngIf="authForm.get('email')?.errors?.['email']">Enter a valid email address.</small>
+    <small *ngIf="authForm.get('email')?.errors?.['pattern']">Entered is not a google account.</small>
+  </div>
+</div>
 
-    <!-- Password -->
-    <div>
-      <input type="password" formControlName="password" placeholder="Password" />
-      <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched">
-        Password must be at least 6 characters.
-      </div>
-    </div>
+<!-- Password -->
+<div class="position-relative mb-3">
+  <input
+    [type]="showPassword ? 'text' : 'password'"
+    class="form-control pe-5"
+    formControlName="password"
+    placeholder="Password"
+    style="padding-right: 2.5rem;"  
+  />
 
-    <!-- Address -->
-    <div>
-      <textarea formControlName="address" placeholder="Address"></textarea>
-      <div *ngIf="authForm.get('address')?.invalid && authForm.get('address')?.touched">
-        Address is required.
-      </div>
-    </div>
+  <!-- Eye Icon -->
+  <i
+    class="bi"
+    [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+    (click)="togglePasswordVisibility($event)"
+    style="
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #6c757d;
+      z-index: 10;
+    "
+  ></i>
+
+  <!-- Error Message -->
+  <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="text-white mt-1">
+    <small *ngIf="authForm.get('password')?.errors?.['required']">
+      *Password must be at least 6 characters.
+    </small>
+  </div>
+</div>
+
 
     <!-- Error Message -->
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
     <!-- Submit Button -->
-    <button type="submit" [disabled]="authForm.invalid">Register</button>
+     <app-loading-button
+      [isLoading]="isLoading"
+      [text]="'Register'"
+      [disabled]="authForm.invalid"
+      (click)="register()"></app-loading-button>
+    <!-- <button type="submit" [disabled]="authForm.invalid">Register</button> -->
   </form>
 </div>
 
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div *ngIf="showToast" class="toast align-items-center text-white bg-danger border-0 show" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ toastMessage }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="showToast = false"></button>
+    </div>
+  </div>
+</div>

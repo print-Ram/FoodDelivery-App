@@ -1,0 +1,43 @@
+.profile-section {
+  background-image: url('/assets/profile-bg.jpg'); /* adjust path */
+  background-size: cover;
+  background-color: rgba(40, 34, 34, 0.802);
+  background-position: center;
+  border-radius: 12px;
+  padding: 2rem;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.bg-opacity {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.blur-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: #e0e0e0;
+  font-style: italic;
+}
+ 
+.i1{
+    color: cadetblue;
+
+}
+
+.i2{
+   color: rgb(231, 247, 247); 
+   font-family:'Times New Roman', Times, serif
+}
